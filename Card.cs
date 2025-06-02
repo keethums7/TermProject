@@ -38,11 +38,11 @@ public class Card
         return Name;
     }
 
-    public bool MatchField(string cardField, string value)
+    public bool MatchAttr(string searchAttr, string value)
     {
-        Console.WriteLine($"Searching {cardField} for {value}");
+        Console.WriteLine($"Searching {searchAttr} for {value}");
         bool match = false;
-        switch (cardField)
+        switch (searchAttr)
         {
             case "name":
                 if (Name == value)

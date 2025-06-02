@@ -215,6 +215,8 @@ public class Deck
         Cards.Remove(card);
     }
 
+    // uses the Card classes MatchAttr method to return the first card
+    // with an attribute that matches the value passed in during search
     public Card SearchCard()
     {
         // default/null case, will update if we get a match later
@@ -222,7 +224,7 @@ public class Deck
         
         if (Cards.Count > 0)
         { 
-            string[] cardFields =
+            string[] cardAttrs =
             [
                 "Name",
                 "ManaCost",
@@ -237,27 +239,27 @@ public class Deck
                 "Defense"
             ];
             Console.WriteLine($"Type a card field, enter one of the following:(type END to exit)\n");
-            foreach (string f in cardFields)
+            foreach (string a in cardAttrs)
             {
-               Console.WriteLine(f); 
+               Console.WriteLine(a); 
             }
             
             bool valid = false;
             // loop until we get good input
             do
             {
-                string? cardField = Console.ReadLine();
-                if (cardField.ToLower() is "end") 
+                string? cardAttr = Console.ReadLine();
+                if (cardAttr.ToLower() is "end") 
                 {
                     // close the loop
                     valid = true;
                     break;
                 }
 
-                for (int i = 0; i < cardFields.Length; i++)
+                for (int i = 0; i < cardAttrs.Length; i++)
                 {
                     // if the two strings match, setup an actual search using that field
-                    if (string.Equals(cardField, cardFields[i], StringComparison.OrdinalIgnoreCase))
+                    if (string.Equals(cardAttr, cardAttrs[i], StringComparison.OrdinalIgnoreCase))
                     {
                         valid = true;
 
@@ -267,7 +269,7 @@ public class Deck
 
                         do
                         {
-                            Console.WriteLine($"Searching by {cardField}, enter value to search for:\n");
+                            Console.WriteLine($"Searching by {cardAttr}, enter value to search for:\n");
 
                             // loop until we get good input
                             value = Console.ReadLine();
@@ -278,7 +280,7 @@ public class Deck
                                 foreach (Card c in Cards)
                                 {
                                     // use the card's match method
-                                    if (c.MatchField(cardField.ToLower(), value))
+                                    if (c.MatchAttr(cardAttr.ToLower(), value))
                                     {
                                         searchCard = c;
                                         break;

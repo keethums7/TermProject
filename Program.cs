@@ -1,4 +1,11 @@
-﻿namespace TermProject;
+﻿/*
+ * Entrypoint into the program
+ *
+ * Instantiates a Deck/collection object
+ * then tracks the object as cards are added/removed
+ * allows user to continue input until they choose to exit
+ */
+namespace TermProject;
 
 class Program
 {

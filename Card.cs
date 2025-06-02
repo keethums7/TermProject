@@ -1,4 +1,10 @@
-using System.Text.RegularExpressions;
+/*
+ * Card object
+ *
+ * Represents a Magic: The Gathering card object
+ * includes a matching method to assist with
+ * collection searches for individual cards
+ */
 
 namespace TermProject;
 

@@ -1,5 +1,10 @@
-using System.Reflection;
-
+/*
+ * Deck/collection object
+ *
+ * Contains all the Magic cards added during a given execution
+ * Allows for adding, removing, and searching for cards
+ * ToString prints out the name of each card in the collection
+ */
 namespace TermProject;
 
 public class Deck
@@ -13,7 +18,7 @@ public class Deck
         
         // provide a useful link if the user isn't aware of
         // scryfall mana cost syntax structure
-        // (scryfall is my defacto MTG search engine)
+        // (scryfall is my de facto MTG search engine)
         string? manaCost = "";
         bool helped = false;
         while (!helped)
@@ -258,7 +263,7 @@ public class Deck
 
                 for (int i = 0; i < cardAttrs.Length; i++)
                 {
-                    // if the two strings match, setup an actual search using that field
+                    // if the two strings match, set up an actual search using that field
                     if (string.Equals(cardAttr, cardAttrs[i], StringComparison.OrdinalIgnoreCase))
                     {
                         valid = true;

@@ -2,7 +2,7 @@
 A terminal app built to visually frame cards for Magic: The Gathering as entered by the user.
 
 ### Requirements ###
-- Add cards, one attribute at a time to a collection (deck)
+- Add cards, built with user input (one attribute at a time), to a collection.
 - Display entire collection.
 - Search existing collection.
 - Remove existing cards.

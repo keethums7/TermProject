@@ -8,7 +8,7 @@
 
 namespace TermProject;
 
-public class Card
+public class Card : IBattle, ICreature, IPlaneswalker
 {
     protected string Name {get; set;}
     protected string ManaCost  {get; set;}
@@ -18,6 +18,13 @@ public class Card
     protected string FlavorText {get; set;}
     protected string Artist {get; set;}
     protected int MaxWidth {get; set;}
+    
+    // if we need these, we'll use the interfaces
+    // implemented in the class header
+    protected int Defense {get; set;}
+    protected int Power {get; set;}
+    protected int Toughness {get; set;}
+    protected int Loyalty {get; set;}}
 
     public Card(string name, string manaCost, string typeLine, string rarityLine, string text, string flavorText, string artist) 
     {
@@ -45,6 +52,8 @@ public class Card
         
         MaxWidth = SetMaxWidth();
     }
+
+    public 
 
     public string GetName()
     {

@@ -7,7 +7,7 @@
  */
 namespace TermProject;
 
-public class Deck
+public class Deck 
 {
     private List<Card> Cards { get; set; } = [];
 
@@ -226,7 +226,7 @@ public class Deck
     public Card SearchCard()
     {
         // default/null case, will update if we get a match later
-        Card searchCard = new Card("", "", "", "", "", "", "", -99, -99, -99, -99);
+        Card searchCard = new Card();
         
         if (Cards.Count > 0)
         { 

@@ -13,10 +13,10 @@ public class Card : IBattle, ICreature, IPlaneswalker
     protected string Name {get; set;}
     protected string ManaCost  {get; set;}
     protected string TypeLine {get; set;}
-    protected string RarityLine { get; set; }
+    protected internal string RarityLine { get; set; }
     protected string Text {get; set;}
     protected string FlavorText {get; set;}
-    protected string Artist {get; set;}
+    protected internal string Artist {get; set;}
     protected int MaxWidth {get; set;}
     
     // if we need these, we'll use the interfaces
@@ -24,7 +24,10 @@ public class Card : IBattle, ICreature, IPlaneswalker
     protected int Defense {get; set;}
     protected int Power {get; set;}
     protected int Toughness {get; set;}
-    protected int Loyalty {get; set;}}
+    protected int Loyalty {get; set;}
+
+    // handle double-faced cards
+    protected CardBack? Back { get; set; }
 
     public Card(string name, string manaCost, string typeLine, string rarityLine, string text, string flavorText, string artist) 
     {
@@ -53,8 +56,6 @@ public class Card : IBattle, ICreature, IPlaneswalker
         MaxWidth = SetMaxWidth();
     }
 
-    public 
-
     public string GetName()
     {
         return Name;
@@ -67,6 +68,61 @@ public class Card : IBattle, ICreature, IPlaneswalker
         MaxWidth = int.Max(MaxWidth, Artist.Length); // compare the max found above with the Artist line
         MaxWidth = int.Max(MaxWidth, 38); // most cards have text lines with length no longer than 38 chars
         return MaxWidth;
+    }
+    
+    
+    // interface methods - IBattle
+    public CardBack GetBack()
+    {
+        return Back;
+    }
+
+    public int GetDefense()
+    {
+        return Defense;
+    }
+
+    // unlikely this ever gets used
+    public void SetBack(CardBack back)
+    {
+        Back = back;
+    }
+
+    public void SetDefense(int defense)
+    {
+        Defense = defense;
+    }
+    
+    // interface methods - ICreature
+    public int GetPower()
+    {
+        return Power;
+    }
+    
+    public int GetToughness()
+    {
+        return Toughness;
+    }
+
+    public void SetPower(int power)
+    {
+        Power = power;
+    }
+    
+    public void SetToughness(int toughness)
+    {
+        Toughness = toughness;
+    }
+    
+    // interface methods - IPlaneswalker
+    public int GetLoyalty()
+    {
+        return Loyalty;
+    }
+
+    public void SetLoyalty(int loyalty)
+    {
+        Loyalty = loyalty;
     }
 
     public bool MatchAttr(string searchAttr, string value)
@@ -118,6 +174,30 @@ public class Card : IBattle, ICreature, IPlaneswalker
                     match = true;
                 }
                 break;
+            case "defense":
+                if (GetDefense() == int.Parse(value))
+                {
+                    match = true;
+                }
+                break;
+            case "loyalty":
+                if (GetLoyalty() == int.Parse(value))
+                {
+                    match = true;
+                }
+                break;
+            case "power":
+                if (GetPower() == int.Parse(value))
+                {
+                    match = true;
+                }
+                break;
+            case "toughness":
+                if (GetToughness() == int.Parse(value))
+                {
+                    match = true;
+                }
+                break;
             default:
                 Console.WriteLine("error: wrong input, try again");
                 break;
@@ -127,10 +207,25 @@ public class Card : IBattle, ICreature, IPlaneswalker
 
     public override string ToString()
     {
-
         string top = "_";
         string bottom = "=";
         string row = " ";
+
+        string statLine = "";
+        // if any stats below are needed, we'll update the stat line
+        if (!(Defense == 0 && Loyalty == 0 && Power == 0 && Toughness == 0))
+        {
+            if (Defense == 0 && Loyalty == 0)
+            {
+                statLine = $"{Power} / {Toughness}";
+            } else if (Defense != 0)
+            {
+                statLine = $"{Defense}";
+            } else if (Loyalty != 0)
+            {
+                statLine = $"{Loyalty}";
+            }
+        }
         
         // // concat underscores to build the top, bottom, and empty rows of each card based on that width
         for (int i = 0; i < MaxWidth; i++)
@@ -155,9 +250,12 @@ public class Card : IBattle, ICreature, IPlaneswalker
                         ||{Text.PadRight(MaxWidth + 1)}||
                         ||{row}||
                         ||{FlavorText.PadRight(MaxWidth + 1)}||
-                        ||{("🖌️" + Artist).PadRight(MaxWidth) + 1}||
+                        ||{("🖌️" + Artist).PadRight(MaxWidth + 1)}||
+                        ||{statLine.PadRight(MaxWidth + 1)}||
                          {bottom}==
                         """;
+        // default case, don't print the card back
+        output += Back?.GetName() == "CardBack" ? Back.ToString() : "\n";
 
         return output;
     }

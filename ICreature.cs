@@ -2,8 +2,8 @@ namespace TermProject;
 
 public interface ICreature
 {
-    void GetPower();
-    void GetToughness();
-    void SetPower();
-    void SetToughness();
+    int GetPower();
+    int GetToughness();
+    void SetPower(int power);
+    void SetToughness(int toughness);
 }

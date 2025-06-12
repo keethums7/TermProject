@@ -2,6 +2,8 @@ namespace TermProject;
 
 public interface IBattle
 {
-    void GetDefense();
-    void SetDefense();
+    CardBack GetBack();
+    int GetDefense();
+    void SetBack(CardBack back);
+    void SetDefense(int defense);
 }

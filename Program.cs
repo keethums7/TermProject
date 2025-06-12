@@ -33,7 +33,9 @@ class Program
             {
                 // add new card with user entry for each stat line
                 case 1:
-                    deck.AddCard();
+                    Card newCard = deck.BuildCard();
+                    deck.CheckSpecialCases(newCard);
+                    deck.AddCard(newCard);
                     break;
                 case 2:
                     Card searchCard = deck.SearchCard();

@@ -9,7 +9,7 @@ namespace TermProject;
 
 public class Deck
 {
-    List<Card> Cards { get; set; } = new();
+    private List<Card> Cards { get; set; } = [];
 
     public void AddCard()
     {
@@ -153,6 +153,7 @@ public class Deck
         do
         {
             Console.WriteLine("Does the card need starting loyalty added?: (Y/y for yes, N/n for no)");
+            // correct for lower & uppercase
             isPlaneswalker = (Console.ReadLine()).ToLower();
         } while (isPlaneswalker != "y" && isPlaneswalker != "n");
 

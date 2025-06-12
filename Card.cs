@@ -10,20 +10,16 @@ namespace TermProject;
 
 public class Card
 {
-    public string Name {get; set;}
-    public string ManaCost  {get; set;}
-    public string TypeLine {get; set;}
-    public string RarityLine { get; set; }
-    public string Text {get; set;}
-    public string FlavorText {get; set;}
-    public string Artist {get; set;}
-    
-    public int Power {get; set;}
-    public int Toughness {get; set;}
-    public int Loyalty {get; set;}
-    public int Defense {get; set;}
+    protected string Name {get; set;}
+    protected string ManaCost  {get; set;}
+    protected string TypeLine {get; set;}
+    protected string RarityLine { get; set; }
+    protected string Text {get; set;}
+    protected string FlavorText {get; set;}
+    protected string Artist {get; set;}
+    protected int MaxWidth {get; set;}
 
-    public Card(string name, string manaCost, string typeLine, string rarityLine, string text, string flavorText, string artist, int power, int toughness, int loyalty, int defense)
+    public Card(string name, string manaCost, string typeLine, string rarityLine, string text, string flavorText, string artist) 
     {
         Name = name;
         ManaCost = manaCost;
@@ -32,16 +28,36 @@ public class Card
         Text = text;
         FlavorText = flavorText;
         Artist = artist;
+
+        MaxWidth = SetMaxWidth();
+    }
+
+    // empty constructor for error handling and unit testing
+    public Card()
+    {
+        Name = "Test Card";
+        ManaCost = "{W}{U}{B}{R}{G}";
+        TypeLine = "Legendary Sorcery";
+        RarityLine = "Mythic Rare";
+        Text = "At the beginning of your upkeep, you win the game.";
+        FlavorText = "Too easy.";
+        Artist = "Noah Guy";
         
-        Defense = defense;
-        Loyalty = loyalty;
-        Power = power;
-        Toughness = toughness;
+        MaxWidth = SetMaxWidth();
     }
 
     public string GetName()
     {
         return Name;
+    }
+
+    protected int SetMaxWidth()
+    {
+        // find the longest length among Name+ManaCost, TypeLine, and Artist
+        MaxWidth = int.Max(Name.Length + ManaCost.Length, TypeLine.Length); // compare Name+ManaCost vs TypeLine
+        MaxWidth = int.Max(MaxWidth, Artist.Length); // compare the max found above with the Artist line
+        MaxWidth = int.Max(MaxWidth, 38); // most cards have text lines with length no longer than 38 chars
+        return MaxWidth;
     }
 
     public bool MatchAttr(string searchAttr, string value)
@@ -92,34 +108,6 @@ public class Card
                 {
                     match = true;
                 }
-
-                break;
-            case "power":
-                if (Power == int.Parse(value))
-                {
-                    match = true;
-                }
-
-                break;
-            case "toughness":
-                if (Toughness == int.Parse(value))
-                {
-                    match = true;
-                }
-                break;
-            case "loyalty":
-                if (Loyalty == int.Parse(value))
-                {
-                    match = true;
-                }
-
-                break;
-            case "defense":
-                if (Defense == int.Parse(value))
-                {
-                    match = true;
-                }
-
                 break;
             default:
                 Console.WriteLine("error: wrong input, try again");
@@ -130,25 +118,44 @@ public class Card
 
     public override string ToString()
     {
-        // find the longest length among Name+ManaCost, TypeLine, and Artist
-        int maxWidth = int.Max(Name.Length + ManaCost.Length, TypeLine.Length); // compare Name+ManaCost vs TypeLine
-        maxWidth = int.Max(maxWidth, Artist.Length); // compare the max found above with the Artist line
-        maxWidth = int.Max(maxWidth, 38); // most cards have text lines with length no longer than 38 chars
 
         string top = "_";
         string bottom = "=";
         string row = " ";
         
         // // concat underscores to build the top, bottom, and empty rows of each card based on that width
-        for (int i = 0; i < maxWidth; i++)
+        for (int i = 0; i < MaxWidth; i++)
         {
             top += "_";
             bottom += "=";
             row += " ";
         }
         
-        string statLine = Power != -99 ? $"{Power} / {Toughness}" : Loyalty != -99 ? $"{Loyalty}" : Defense != -99 ? $"{Defense}" : "";
         
+        // build the card printout string
+        string output = $"""
+                         {top}__
+                        ||{(Name).PadRight(MaxWidth - (ManaCost.Length))} {ManaCost}||
+                        ||{top}||
+                        ||{row}||
+                        ||{row}||
+                        ||{row}||
+                        ||{row}||
+                        ||{top}||
+                        ||{TypeLine.PadRight(MaxWidth - RarityLine.Length + 1)}{RarityLine}||
+                        ||{Text.PadRight(MaxWidth + 1)}||
+                        ||{row}||
+                        ||{FlavorText.PadRight(MaxWidth + 1)}||
+                        ||{("🖌️" + Artist).PadRight(MaxWidth) + 1}||
+                         {bottom}==
+                        """;
+
+        return output;
+    }
+}
+
+
+// TODO
         /*
          * Still working out the logic for cleanly splitting the text lines and flavorText lines
          * so that they neatly fit within the card frame as defined by the maxWidth
@@ -244,25 +251,3 @@ public class Card
         //     }// if the line does exceed the maxWidth
         //     
         // }
-        
-        // build the card printout string
-        string output = $"""
-                         {top}__
-                        ||{(Name).PadRight(maxWidth - (ManaCost.Length))} {ManaCost}||
-                        ||{top}||
-                        ||{row}||
-                        ||{row}||
-                        ||{row}||
-                        ||{row}||
-                        ||{top}||
-                        ||{TypeLine.PadRight(maxWidth - RarityLine.Length + 1)}{RarityLine}||
-                        ||{Text.PadRight(maxWidth + 1)}||
-                        ||{row}||
-                        ||{FlavorText.PadRight(maxWidth + 1)}||
-                        ||{("🖌️" + Artist).PadRight(maxWidth - (statLine.Length))} {statLine}||
-                         {bottom}==
-                        """;
-
-        return output;
-    }
-}

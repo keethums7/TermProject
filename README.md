@@ -9,7 +9,7 @@ A terminal app built to visually frame cards for Magic: The Gathering as entered
 
 ### Out of Bounds ###
 - No GUI
-- Search functionality is explicit/exact currently, no fuzzy finding or loose matching currently.
+- Search functionality is explicit/exact currently, no fuzzy finding or loose matching.
 - Each card built by user input, no API search for existing cards yet.
 - Wrapping of card text/flavor text still in progress, cards can appear slightly misshapen during printout.
 ### Implementation Details ###
